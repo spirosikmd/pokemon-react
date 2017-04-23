@@ -75,7 +75,7 @@ class App extends Component {
           <div>Loading...</div>
         )}
         {selectedPokemon ? (
-          <Pokemon pokemonData={selectedPokemon} />
+          <Pokemon pokemon={selectedPokemon} />
         ): (
           <div>Select a pokemon!</div>
         )}
