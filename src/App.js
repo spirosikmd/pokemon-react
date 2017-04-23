@@ -10,6 +10,7 @@ class App extends PureComponent {
 
     this.state = {
       pokemons: [],
+      favoritePokemons: [],
       selectedPokemon: null,
       isLoading: true,
       previousLink: null,
@@ -20,8 +21,9 @@ class App extends PureComponent {
 
     this.handlePreviousClick = this.handlePreviousClick.bind(this);
     this.handleNextClick = this.handleNextClick.bind(this);
-    this.handlePokemonSelect = this.handlePokemonSelect.bind(this);
+    this.handlePokemonClick = this.handlePokemonClick.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
+    this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
   }
 
   componentDidMount() {
@@ -29,12 +31,27 @@ class App extends PureComponent {
       .then(this.onGetPokemonsSuccess.bind(this));
   }
 
-  handlePokemonSelect(pokemonUrl) {
+  handlePokemonClick(pokemonUrl) {
     getPokemon(pokemonUrl)
       .then((pokemonResponse) => {
         const selectedPokemon = Object.assign({}, pokemonResponse);
         this.setState({selectedPokemon, showPokemon: true});
       });
+  }
+
+  handleFavoriteClick(pokemonNameToFavorite) {
+    const isFavorite = this.isFavorite(pokemonNameToFavorite);
+
+    if (!isFavorite) {
+      this.setState({favoritePokemons: [...this.state.favoritePokemons, pokemonNameToFavorite]});
+      return;
+    }
+
+    this.setState({favoritePokemons: this.state.favoritePokemons.filter((pokemonName) => pokemonName !== pokemonNameToFavorite)});
+  }
+
+  isFavorite(pokemonNameToFavorite) {
+    return this.state.favoritePokemons.find((pokemonName) => pokemonName === pokemonNameToFavorite) !== undefined;
   }
 
   handleCloseModal() {
@@ -72,6 +89,7 @@ class App extends PureComponent {
     const nextLink = this.state.nextLink;
     const showPokemon = this.state.showPokemon;
     const count = this.state.count;
+    const favoritePokemons = this.state.favoritePokemons;
 
     return (
       <div>
@@ -82,7 +100,10 @@ class App extends PureComponent {
         )}
         {!isLoading ? (
           <div>
-            <PokemonList pokemons={pokemons} onPokemonSelect={this.handlePokemonSelect}/>
+            <PokemonList pokemons={pokemons}
+                         favoritePokemons={favoritePokemons}
+                         onPokemonClick={this.handlePokemonClick}
+                         onFavoriteClick={this.handleFavoriteClick}/>
             <button onClick={this.handlePreviousClick} disabled={!previousLink}>previous</button>
             <button onClick={this.handleNextClick} disabled={!nextLink}>next</button>
           </div>
