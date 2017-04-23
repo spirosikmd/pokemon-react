@@ -1,0 +1,87 @@
+{
+  "count": 811,
+  "next": "http://pokeapi.co/api/v2/pokemon/?offset=40",
+  "previous": "http://pokeapi.co/api/v2/pokemon/",
+  "results": [
+    {
+      "name": "spearow",
+      "url": "http://pokeapi.co/api/v2/pokemon/21/"
+    },
+    {
+      "name": "fearow",
+      "url": "http://pokeapi.co/api/v2/pokemon/22/"
+    },
+    {
+      "name": "ekans",
+      "url": "http://pokeapi.co/api/v2/pokemon/23/"
+    },
+    {
+      "name": "arbok",
+      "url": "http://pokeapi.co/api/v2/pokemon/24/"
+    },
+    {
+      "name": "pikachu",
+      "url": "http://pokeapi.co/api/v2/pokemon/25/"
+    },
+    {
+      "name": "raichu",
+      "url": "http://pokeapi.co/api/v2/pokemon/26/"
+    },
+    {
+      "name": "sandshrew",
+      "url": "http://pokeapi.co/api/v2/pokemon/27/"
+    },
+    {
+      "name": "sandslash",
+      "url": "http://pokeapi.co/api/v2/pokemon/28/"
+    },
+    {
+      "name": "nidoran-f",
+      "url": "http://pokeapi.co/api/v2/pokemon/29/"
+    },
+    {
+      "name": "nidorina",
+      "url": "http://pokeapi.co/api/v2/pokemon/30/"
+    },
+    {
+      "name": "nidoqueen",
+      "url": "http://pokeapi.co/api/v2/pokemon/31/"
+    },
+    {
+      "name": "nidoran-m",
+      "url": "http://pokeapi.co/api/v2/pokemon/32/"
+    },
+    {
+      "name": "nidorino",
+      "url": "http://pokeapi.co/api/v2/pokemon/33/"
+    },
+    {
+      "name": "nidoking",
+      "url": "http://pokeapi.co/api/v2/pokemon/34/"
+    },
+    {
+      "name": "clefairy",
+      "url": "http://pokeapi.co/api/v2/pokemon/35/"
+    },
+    {
+      "name": "clefable",
+      "url": "http://pokeapi.co/api/v2/pokemon/36/"
+    },
+    {
+      "name": "vulpix",
+      "url": "http://pokeapi.co/api/v2/pokemon/37/"
+    },
+    {
+      "name": "ninetales",
+      "url": "http://pokeapi.co/api/v2/pokemon/38/"
+    },
+    {
+      "name": "jigglypuff",
+      "url": "http://pokeapi.co/api/v2/pokemon/39/"
+    },
+    {
+      "name": "wigglytuff",
+      "url": "http://pokeapi.co/api/v2/pokemon/40/"
+    }
+  ]
+}
