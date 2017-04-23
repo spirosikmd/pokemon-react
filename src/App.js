@@ -13,12 +13,14 @@ class App extends Component {
       selectedPokemon: null,
       isLoading: true,
       previousLink: null,
-      nextLink: null
+      nextLink: null,
+      showPokemon: false
     };
 
     this.handlePreviousClick = this.handlePreviousClick.bind(this);
     this.handleNextClick = this.handleNextClick.bind(this);
     this.handlePokemonSelect = this.handlePokemonSelect.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
   componentDidMount() {
@@ -30,8 +32,12 @@ class App extends Component {
     getPokemon(pokemonUrl)
       .then((pokemonResponse) => {
         const selectedPokemon = Object.assign({}, pokemonResponse);
-        this.setState({selectedPokemon});
+        this.setState({selectedPokemon, showPokemon: true});
       });
+  }
+
+  handleCloseModal() {
+    this.setState({showPokemon: false});
   }
 
   onGetPokemonsSuccess(pokemonsResponse) {
@@ -62,6 +68,7 @@ class App extends Component {
     const selectedPokemon = this.state.selectedPokemon;
     const previousLink = this.state.previousLink;
     const nextLink = this.state.nextLink;
+    const showPokemon = this.state.showPokemon;
 
     return (
       <div>
@@ -75,7 +82,7 @@ class App extends Component {
           <div>Loading...</div>
         )}
         {selectedPokemon ? (
-          <Pokemon pokemon={selectedPokemon} />
+          <Pokemon pokemon={selectedPokemon} show={showPokemon} onCloseModal={this.handleCloseModal} />
         ): (
           <div>Select a pokemon!</div>
         )}
