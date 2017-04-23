@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 
-class PokemonList extends Component {
+class PokemonList extends PureComponent {
   handlePokemonClick(url) {
     this.props.onPokemonSelect(url);
   }

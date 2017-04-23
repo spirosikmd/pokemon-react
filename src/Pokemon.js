@@ -1,17 +1,31 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import ReactModal from 'react-modal';
 
-class Pokemon extends Component {
+class Pokemon extends PureComponent {
   render() {
+    const pokemon = this.props.pokemon;
+
     return (
       <ReactModal isOpen={this.props.show} contentLabel="Pokemon details">
         <section>
-          <h1>{this.props.pokemon.name}</h1>
+          <h1>{pokemon.name}</h1>
+          <dl>
+            <dt>weight</dt>
+            <dd>{pokemon.weight}</dd>
+            <dt>height</dt>
+            <dd>{pokemon.height}</dd>
+            <dt>experience</dt>
+            <dd>Defeating {pokemon.name} will give you {pokemon.base_experience} xp!</dd>
+            <dt>order</dt>
+            <dd>{pokemon.order}</dd>
+            <dt>species</dt>
+            <dd>{pokemon.species.name}</dd>
+          </dl>
         </section>
         <section>
           <h2>abilities</h2>
           <ul>
-            {this.props.pokemon.abilities.map(ability =>
+            {pokemon.abilities.map(ability =>
               <li key={ability.ability.name}>{ability.ability.name}</li>
             )}
           </ul>
@@ -19,12 +33,12 @@ class Pokemon extends Component {
         <section>
           <h2>forms</h2>
           <ul>
-            {this.props.pokemon.forms.map(form =>
+            {pokemon.forms.map(form =>
               <li key={form.name}>{form.name}</li>
             )}
           </ul>
         </section>
-        <button onClick={this.props.onCloseModal}>Close Modal</button>
+        <button onClick={this.props.onCloseModal}>close</button>
       </ReactModal>
     );
   }

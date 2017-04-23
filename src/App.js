@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {getPokemons, getPokemon} from './api';
+import React, {PureComponent} from 'react';
+import {getPokemon, getPokemons} from './api';
 import Pokemon from './Pokemon';
 import PokemonList from './PokemonList';
 import './App.css';
 
-class App extends Component {
+class App extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -14,7 +14,8 @@ class App extends Component {
       isLoading: true,
       previousLink: null,
       nextLink: null,
-      showPokemon: false
+      showPokemon: false,
+      count: null
     };
 
     this.handlePreviousClick = this.handlePreviousClick.bind(this);
@@ -46,7 +47,8 @@ class App extends Component {
       pokemons,
       isLoading: false,
       nextLink: pokemonsResponse.next,
-      previousLink: pokemonsResponse.previous
+      previousLink: pokemonsResponse.previous,
+      count: pokemonsResponse.count
     });
   }
 
@@ -69,12 +71,18 @@ class App extends Component {
     const previousLink = this.state.previousLink;
     const nextLink = this.state.nextLink;
     const showPokemon = this.state.showPokemon;
+    const count = this.state.count;
 
     return (
       <div>
+        {count ? (
+          <div>In total there are {this.state.count} pokemons!</div>
+        ) : (
+          undefined
+        )}
         {!isLoading ? (
           <div>
-            <PokemonList pokemons={pokemons} onPokemonSelect={this.handlePokemonSelect} />
+            <PokemonList pokemons={pokemons} onPokemonSelect={this.handlePokemonSelect}/>
             <button onClick={this.handlePreviousClick} disabled={!previousLink}>previous</button>
             <button onClick={this.handleNextClick} disabled={!nextLink}>next</button>
           </div>
@@ -82,9 +90,9 @@ class App extends Component {
           <div>Loading...</div>
         )}
         {selectedPokemon ? (
-          <Pokemon pokemon={selectedPokemon} show={showPokemon} onCloseModal={this.handleCloseModal} />
-        ): (
-          <div>Select a pokemon!</div>
+          <Pokemon pokemon={selectedPokemon} show={showPokemon} onCloseModal={this.handleCloseModal}/>
+        ) : (
+          undefined
         )}
       </div>
     );
