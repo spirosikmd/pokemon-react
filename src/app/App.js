@@ -1,7 +1,8 @@
 import React, {PureComponent} from 'react';
-import {getPokemon, getPokemons} from './api';
-import Pokemon from './Pokemon';
-import PokemonList from './PokemonList';
+import {getPokemon, getPokemons} from '../api';
+import PokemonDetail from '../pokemon-detail/PokemonDetail';
+import PokemonList from '../pokemon-list/PokemonList';
+import Filters from '../filters/Filters';
 import './App.css';
 
 class App extends PureComponent {
@@ -13,17 +14,18 @@ class App extends PureComponent {
       favoritePokemons: [],
       selectedPokemon: null,
       isLoading: true,
-      previousLink: null,
-      nextLink: null,
       showPokemon: false,
-      count: null
+      count: null,
+      searchText: '',
+      favoriteOnly: false
     };
 
-    this.handlePreviousClick = this.handlePreviousClick.bind(this);
-    this.handleNextClick = this.handleNextClick.bind(this);
     this.handlePokemonClick = this.handlePokemonClick.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
+    this.handleSearchTextInput = this.handleSearchTextInput.bind(this);
+    this.handleFavoriteInput = this.handleFavoriteInput.bind(this);
+    this.handleFiltersReset = this.handleFiltersReset.bind(this);
   }
 
   componentDidMount() {
@@ -31,8 +33,16 @@ class App extends PureComponent {
       .then(this.onGetPokemonsSuccess.bind(this));
   }
 
-  handlePokemonClick(pokemonUrl) {
-    getPokemon(pokemonUrl)
+  handleSearchTextInput(searchText) {
+    this.setState({searchText});
+  }
+
+  handleFavoriteInput(favoriteOnly) {
+    this.setState({favoriteOnly})
+  }
+
+  handlePokemonClick(pokemonName) {
+    getPokemon(pokemonName)
       .then((pokemonResponse) => {
         const selectedPokemon = Object.assign({}, pokemonResponse);
         this.setState({selectedPokemon, showPokemon: true});
@@ -47,7 +57,15 @@ class App extends PureComponent {
       return;
     }
 
-    this.setState({favoritePokemons: this.state.favoritePokemons.filter((pokemonName) => pokemonName !== pokemonNameToFavorite)});
+    this.setState({
+      favoritePokemons: this.state.favoritePokemons.filter((pokemonName) => {
+        return pokemonName !== pokemonNameToFavorite;
+      })
+    });
+  }
+
+  handleFiltersReset() {
+    this.setState({searchText: '', favoriteOnly: false});
   }
 
   isFavorite(pokemonNameToFavorite) {
@@ -63,30 +81,14 @@ class App extends PureComponent {
     this.setState({
       pokemons,
       isLoading: false,
-      nextLink: pokemonsResponse.next,
-      previousLink: pokemonsResponse.previous,
       count: pokemonsResponse.count
     });
-  }
-
-  handlePreviousClick() {
-    const previousLink = this.state.previousLink;
-    getPokemons(previousLink)
-      .then(this.onGetPokemonsSuccess.bind(this));
-  }
-
-  handleNextClick() {
-    const nextLink = this.state.nextLink;
-    getPokemons(nextLink)
-      .then(this.onGetPokemonsSuccess.bind(this));
   }
 
   render() {
     const isLoading = this.state.isLoading;
     const pokemons = this.state.pokemons;
     const selectedPokemon = this.state.selectedPokemon;
-    const previousLink = this.state.previousLink;
-    const nextLink = this.state.nextLink;
     const showPokemon = this.state.showPokemon;
     const count = this.state.count;
     const favoritePokemons = this.state.favoritePokemons;
@@ -94,24 +96,36 @@ class App extends PureComponent {
     return (
       <div>
         {count ? (
-          <div>In total there are {this.state.count} pokemons!</div>
+          <div>In total there are {count} pokemons!</div>
         ) : (
           undefined
         )}
+
+        <Filters
+          searchText={this.state.searchText}
+          favoriteOnly={this.state.favoriteOnly}
+          onSearchTextInput={this.handleSearchTextInput}
+          onFavoriteInput={this.handleFavoriteInput}
+        />
+
         {!isLoading ? (
           <div>
-            <PokemonList pokemons={pokemons}
-                         favoritePokemons={favoritePokemons}
-                         onPokemonClick={this.handlePokemonClick}
-                         onFavoriteClick={this.handleFavoriteClick}/>
-            <button onClick={this.handlePreviousClick} disabled={!previousLink}>previous</button>
-            <button onClick={this.handleNextClick} disabled={!nextLink}>next</button>
+            <PokemonList
+              pokemons={pokemons}
+              favoritePokemons={favoritePokemons}
+              onPokemonClick={this.handlePokemonClick}
+              onFavoriteClick={this.handleFavoriteClick}
+              onFiltersReset={this.handleFiltersReset}
+              searchText={this.state.searchText}
+              favoriteOnly={this.state.favoriteOnly}
+            />
           </div>
         ) : (
           <div>Loading...</div>
         )}
+
         {selectedPokemon ? (
-          <Pokemon pokemon={selectedPokemon} show={showPokemon} onCloseModal={this.handleCloseModal}/>
+          <PokemonDetail pokemon={selectedPokemon} show={showPokemon} onCloseModal={this.handleCloseModal}/>
         ) : (
           undefined
         )}

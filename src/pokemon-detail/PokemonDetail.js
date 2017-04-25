@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import ReactModal from 'react-modal';
 
-class Pokemon extends PureComponent {
+class PokemonDetail extends PureComponent {
   render() {
     const pokemon = this.props.pokemon;
 
@@ -44,4 +44,4 @@ class Pokemon extends PureComponent {
   }
 }
 
-export default Pokemon;
+export default PokemonDetail;
