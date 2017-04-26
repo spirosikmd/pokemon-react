@@ -56,11 +56,11 @@ class App extends PureComponent {
   }
 
   handleSearchTextInput(searchText) {
-    this.setState({ searchText });
+    this.setState({ searchText, selectedPage: 0 });
   }
 
   handleFavoriteInput(favoriteOnly) {
-    this.setState({ favoriteOnly });
+    this.setState({ favoriteOnly, selectedPage: 0 });
   }
 
   handlePokemonClick(pokemonName) {
@@ -91,7 +91,7 @@ class App extends PureComponent {
   }
 
   handleFiltersReset() {
-    this.setState({ searchText: '', favoriteOnly: false });
+    this.setState({ searchText: '', favoriteOnly: false, selectedPage: 0 });
   }
 
   handlePageChange({ selected }) {
@@ -119,6 +119,10 @@ class App extends PureComponent {
     });
   }
 
+  getPageCount(filteredPokemons, perPage) {
+    return Math.ceil(filteredPokemons.length / perPage);
+  }
+
   render() {
     const selectedPokemon = this.state.selectedPokemon;
     const count = this.state.count;
@@ -130,7 +134,7 @@ class App extends PureComponent {
       this.state.selectedPage
     );
 
-    const pageCount = Math.ceil(filteredPokemons.length / this.state.perPage);
+    const pageCount = this.getPageCount(filteredPokemons, this.state.perPage);
 
     return (
       <div>
