@@ -17,7 +17,9 @@ class App extends PureComponent {
       showPokemon: false,
       count: null,
       searchText: '',
-      favoriteOnly: false
+      favoriteOnly: false,
+      perPage: 10,
+      selectedPage: 0,
     };
 
     this.handlePokemonClick = this.handlePokemonClick.bind(this);
@@ -26,6 +28,7 @@ class App extends PureComponent {
     this.handleSearchTextInput = this.handleSearchTextInput.bind(this);
     this.handleFavoriteInput = this.handleFavoriteInput.bind(this);
     this.handleFiltersReset = this.handleFiltersReset.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentDidMount() {
@@ -33,12 +36,32 @@ class App extends PureComponent {
       .then(this.onGetPokemonsSuccess.bind(this));
   }
 
+  filterPokemons(pokemons) {
+    const searchText = this.state.searchText;
+    return pokemons
+      .filter((pokemon) => {
+        return !searchText || pokemon.name.indexOf(searchText) !== -1;
+      })
+      .filter((pokemon) => {
+        if (!this.state.favoriteOnly) {
+          return true;
+        }
+        return this.isFavorite(pokemon.name);
+      });
+  }
+
+  paginatePokemons(filteredPokemons, perPage, selectedPage) {
+    const start = Math.ceil(selectedPage * perPage);
+    const end = (start + perPage) - 1;
+    return filteredPokemons.slice(start, end);
+  }
+
   handleSearchTextInput(searchText) {
     this.setState({searchText});
   }
 
   handleFavoriteInput(favoriteOnly) {
-    this.setState({favoriteOnly})
+    this.setState({favoriteOnly});
   }
 
   handlePokemonClick(pokemonName) {
@@ -68,30 +91,35 @@ class App extends PureComponent {
     this.setState({searchText: '', favoriteOnly: false});
   }
 
-  isFavorite(pokemonNameToFavorite) {
-    return this.state.favoritePokemons.find((pokemonName) => pokemonName === pokemonNameToFavorite) !== undefined;
+  handlePageChange({selected}) {
+    this.setState({selectedPage: selected});
   }
 
   handleCloseModal() {
     this.setState({showPokemon: false});
   }
 
-  onGetPokemonsSuccess(pokemonsResponse) {
-    const pokemons = [...pokemonsResponse.results];
+  isFavorite(pokemonNameToFavorite) {
+    return this.state.favoritePokemons.find((pokemonName) => pokemonName === pokemonNameToFavorite) !== undefined;
+  }
+
+  onGetPokemonsSuccess({results, count}) {
+    const pokemons = [...results];
     this.setState({
       pokemons,
       isLoading: false,
-      count: pokemonsResponse.count
+      count
     });
   }
 
   render() {
-    const isLoading = this.state.isLoading;
-    const pokemons = this.state.pokemons;
     const selectedPokemon = this.state.selectedPokemon;
-    const showPokemon = this.state.showPokemon;
     const count = this.state.count;
-    const favoritePokemons = this.state.favoritePokemons;
+
+    const filteredPokemons = this.filterPokemons(this.state.pokemons);
+    const paginatedPokemons = this.paginatePokemons(filteredPokemons, this.state.perPage, this.state.selectedPage);
+
+    const pageCount = Math.ceil(filteredPokemons.length / this.state.perPage);
 
     return (
       <div>
@@ -108,16 +136,18 @@ class App extends PureComponent {
           onFavoriteInput={this.handleFavoriteInput}
         />
 
-        {!isLoading ? (
+        {!this.state.isLoading ? (
           <div>
             <PokemonList
-              pokemons={pokemons}
-              favoritePokemons={favoritePokemons}
+              pokemons={paginatedPokemons}
+              favoritePokemons={this.state.favoritePokemons}
               onPokemonClick={this.handlePokemonClick}
               onFavoriteClick={this.handleFavoriteClick}
               onFiltersReset={this.handleFiltersReset}
+              onPageChange={this.handlePageChange}
               searchText={this.state.searchText}
               favoriteOnly={this.state.favoriteOnly}
+              pageCount={pageCount}
             />
           </div>
         ) : (
@@ -125,7 +155,7 @@ class App extends PureComponent {
         )}
 
         {selectedPokemon ? (
-          <PokemonDetail pokemon={selectedPokemon} show={showPokemon} onCloseModal={this.handleCloseModal}/>
+          <PokemonDetail pokemon={selectedPokemon} show={this.state.showPokemon} onCloseModal={this.handleCloseModal}/>
         ) : (
           undefined
         )}

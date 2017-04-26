@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import PokemonRow from '../pokemon-row/PokemonRow';
+import ReactPaginate from 'react-paginate';
 
 class PokemonList extends PureComponent {
   constructor(props) {
@@ -22,36 +23,39 @@ class PokemonList extends PureComponent {
   }
 
   render() {
-    const searchText = this.props.searchText;
-    const filteredPokemon = this.props.pokemons
-      .filter((pokemon) => {
-        return !searchText || pokemon.name.indexOf(searchText) !== -1;
-      }).filter((pokemon) => {
-        if (!this.props.favoriteOnly) {
-          return true;
-        }
-        return this.isFavorite(pokemon.name);
-      });
-
+    const pokemons = this.props.pokemons;
     return (
-      <ul>
-        {filteredPokemon.length > 0 ? (
-          filteredPokemon.map(pokemon =>
-            <PokemonRow
-              key={pokemon.name}
-              pokemon={pokemon}
-              isFavorite={this.isFavorite(pokemon.name)}
-              onPokemonClick={this.handlePokemonClick}
-              onFavoriteClick={this.handleFavoriteClick}
-            />
-          )
+      <div>
+        <ul>
+          {pokemons.length > 0 ? (
+            pokemons.map(pokemon =>
+              <PokemonRow
+                key={pokemon.name}
+                pokemon={pokemon}
+                isFavorite={this.isFavorite(pokemon.name)}
+                onPokemonClick={this.handlePokemonClick}
+                onFavoriteClick={this.handleFavoriteClick}
+              />
+            )
+          ) : (
+            <div>
+              <span>No results</span>
+              <button onClick={this.props.onFiltersReset}>reset</button>
+            </div>
+          )}
+        </ul>
+
+        {pokemons.length > 0 ? (
+          <ReactPaginate
+            pageCount={this.props.pageCount}
+            onPageChange={this.props.onPageChange}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={3}
+          />
         ) : (
-          <div>
-            <span>No results</span>
-            <button onClick={this.props.onFiltersReset}>reset</button>
-          </div>
+          ''
         )}
-      </ul>
+      </div>
     );
   }
 }
