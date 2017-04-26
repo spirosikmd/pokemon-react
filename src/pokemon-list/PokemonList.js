@@ -21,7 +21,7 @@ class PokemonList extends PureComponent {
   isFavorite(pokemonNameToFind) {
     return (
       this.props.favoritePokemons.findIndex(
-        pokemonName => pokemonName === pokemonNameToFind
+        favoritePokemon => favoritePokemon.name === pokemonNameToFind
       ) !== -1
     );
   }

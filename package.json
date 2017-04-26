@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "pokedex-promise-v2": "^3.0.3",
+    "pouchdb-browser": "^6.2.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-modal": "^1.7.7",

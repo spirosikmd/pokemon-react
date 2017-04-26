@@ -21,20 +21,23 @@ class Filters extends Component {
   render() {
     return (
       <form>
-        <input
-          type="text"
-          placeholder="Search..."
-          value={this.props.searchText}
-          onChange={this.handleSearchTextInputChange}
-        />
-        <p>
+        <label>
           <input
-            type="checkbox"
-            checked={this.props.favoriteOnly}
-            onChange={this.handleInStockInputChange}
+            type="text"
+            placeholder="Search..."
+            value={this.props.searchText}
+            onChange={this.handleSearchTextInputChange}
           />
-          {' '}
-          Only show favorite pokemon
+        </label>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+              checked={this.props.favoriteOnly}
+              onChange={this.handleInStockInputChange}
+            />
+            Only show favorite pokemon
+          </label>
         </p>
       </form>
     );

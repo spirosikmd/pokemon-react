@@ -4,6 +4,11 @@ import PokemonDetail from '../pokemon-detail/PokemonDetail';
 import PokemonList from '../pokemon-list/PokemonList';
 import Filters from '../filters/Filters';
 import './App.css';
+import {
+  favoritePokemon,
+  getFavoritePokemons,
+  removeFavoritePokemon,
+} from '../db';
 
 class App extends PureComponent {
   constructor(props) {
@@ -33,6 +38,13 @@ class App extends PureComponent {
 
   componentDidMount() {
     getPokemons().then(this.onGetPokemonsSuccess.bind(this));
+    this.updateFavoritePokemons();
+  }
+
+  updateFavoritePokemons() {
+    return getFavoritePokemons().then(favoritePokemons => {
+      this.setState({ favoritePokemons: [...favoritePokemons] });
+    });
   }
 
   filterPokemons(pokemons) {
@@ -71,23 +83,16 @@ class App extends PureComponent {
   }
 
   handleFavoriteClick(pokemonNameToFavorite) {
-    const isFavorite = this.isFavorite(pokemonNameToFavorite);
-
-    if (!isFavorite) {
-      this.setState({
-        favoritePokemons: [
-          ...this.state.favoritePokemons,
-          pokemonNameToFavorite,
-        ],
-      });
+    if (!this.isFavorite(pokemonNameToFavorite)) {
+      favoritePokemon(pokemonNameToFavorite).then(
+        this.updateFavoritePokemons.bind(this)
+      );
       return;
     }
 
-    this.setState({
-      favoritePokemons: this.state.favoritePokemons.filter(pokemonName => {
-        return pokemonName !== pokemonNameToFavorite;
-      }),
-    });
+    removeFavoritePokemon(pokemonNameToFavorite).then(
+      this.updateFavoritePokemons.bind(this)
+    );
   }
 
   handleFiltersReset() {
@@ -105,7 +110,7 @@ class App extends PureComponent {
   isFavorite(pokemonNameToFavorite) {
     return (
       this.state.favoritePokemons.find(
-        pokemonName => pokemonName === pokemonNameToFavorite
+        favoritePokemon => favoritePokemon.name === pokemonNameToFavorite
       ) !== undefined
     );
   }
