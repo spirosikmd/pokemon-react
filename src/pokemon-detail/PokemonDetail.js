@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import ReactModal from 'react-modal';
 
 class PokemonDetail extends PureComponent {
@@ -15,7 +15,17 @@ class PokemonDetail extends PureComponent {
             <dt>height</dt>
             <dd>{pokemon.height}</dd>
             <dt>experience</dt>
-            <dd>Defeating {pokemon.name} will give you {pokemon.base_experience} xp!</dd>
+            <dd>
+              Defeating
+              {' '}
+              {pokemon.name}
+              {' '}
+              will give you
+              {' '}
+              {pokemon.base_experience}
+              {' '}
+              xp!
+            </dd>
             <dt>order</dt>
             <dd>{pokemon.order}</dd>
             <dt>species</dt>
@@ -25,17 +35,15 @@ class PokemonDetail extends PureComponent {
         <section>
           <h2>abilities</h2>
           <ul>
-            {pokemon.abilities.map(ability =>
+            {pokemon.abilities.map(ability => (
               <li key={ability.ability.name}>{ability.ability.name}</li>
-            )}
+            ))}
           </ul>
         </section>
         <section>
           <h2>forms</h2>
           <ul>
-            {pokemon.forms.map(form =>
-              <li key={form.name}>{form.name}</li>
-            )}
+            {pokemon.forms.map(form => <li key={form.name}>{form.name}</li>)}
           </ul>
         </section>
         <button onClick={this.props.onCloseModal}>close</button>

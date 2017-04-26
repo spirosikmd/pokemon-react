@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 const styles = {
   favorite: {
-    color: 'red'
-  }
+    color: 'red',
+  },
 };
 
 class PokemonRow extends Component {
@@ -16,9 +16,7 @@ class PokemonRow extends Component {
   }
 
   getStyle() {
-    return this.props.isFavorite ?
-      Object.assign({}, styles.favorite) :
-      {};
+    return this.props.isFavorite ? Object.assign({}, styles.favorite) : {};
   }
 
   render() {
@@ -26,15 +24,17 @@ class PokemonRow extends Component {
 
     return (
       <li>
-        <span onClick={() => this.handlePokemonClick(pokemon.name)}
-              style={this.getStyle(pokemon.name)}>
+        <span
+          onClick={() => this.handlePokemonClick(pokemon.name)}
+          style={this.getStyle(pokemon.name)}
+        >
           {pokemon.name}
         </span>
         <button onClick={() => this.handleFavoriteClick(pokemon.name)}>
           {this.props.isFavorite ? '-' : '*'}
         </button>
       </li>
-    )
+    );
   }
 }
 

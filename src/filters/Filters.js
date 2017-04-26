@@ -1,10 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 class Filters extends Component {
   constructor(props) {
     super(props);
 
-    this.handleSearchTextInputChange = this.handleSearchTextInputChange.bind(this);
+    this.handleSearchTextInputChange = this.handleSearchTextInputChange.bind(
+      this
+    );
     this.handleInStockInputChange = this.handleInStockInputChange.bind(this);
   }
 
