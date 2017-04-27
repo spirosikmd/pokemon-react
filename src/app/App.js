@@ -23,7 +23,7 @@ class App extends PureComponent {
       count: null,
       searchText: '',
       favoriteOnly: false,
-      perPage: 10,
+      perPage: 20,
       selectedPage: 0,
     };
 
@@ -47,24 +47,23 @@ class App extends PureComponent {
     });
   }
 
-  filterPokemons(pokemons) {
-    const searchText = this.state.searchText;
+  filterPokemons(pokemons, favoritePokemons, searchText, favoriteOnly) {
     return pokemons
       .filter(pokemon => {
         return !searchText || pokemon.name.indexOf(searchText) !== -1;
       })
       .filter(pokemon => {
-        if (!this.state.favoriteOnly) {
+        if (!favoriteOnly) {
           return true;
         }
-        return this.isFavorite(pokemon.name);
+        return this.isFavorite(favoritePokemons, pokemon.name);
       });
   }
 
   paginatePokemons(filteredPokemons, perPage, selectedPage) {
     const start = Math.ceil(selectedPage * perPage);
     const end = start + perPage - 1;
-    return filteredPokemons.slice(start, end);
+    return filteredPokemons.slice(start, end + 1);
   }
 
   handleSearchTextInput(searchText) {
@@ -82,8 +81,8 @@ class App extends PureComponent {
     });
   }
 
-  handleFavoriteClick(pokemonNameToFavorite) {
-    if (!this.isFavorite(pokemonNameToFavorite)) {
+  handleFavoriteClick(favoritePokemons, pokemonNameToFavorite) {
+    if (!this.isFavorite(favoritePokemons, pokemonNameToFavorite)) {
       favoritePokemon(pokemonNameToFavorite).then(
         this.updateFavoritePokemons.bind(this)
       );
@@ -107,9 +106,9 @@ class App extends PureComponent {
     this.setState({ showPokemon: false });
   }
 
-  isFavorite(pokemonNameToFavorite) {
+  isFavorite(favoritePokemons, pokemonNameToFavorite) {
     return (
-      this.state.favoritePokemons.find(
+      favoritePokemons.find(
         favoritePokemon => favoritePokemon.name === pokemonNameToFavorite
       ) !== undefined
     );
@@ -124,30 +123,41 @@ class App extends PureComponent {
     });
   }
 
-  getPageCount(filteredPokemons, perPage) {
-    return Math.ceil(filteredPokemons.length / perPage);
+  getPageCount(filteredPokemonsLength, perPage) {
+    return Math.ceil(filteredPokemonsLength / perPage);
   }
 
   render() {
-    const selectedPokemon = this.state.selectedPokemon;
-    const count = this.state.count;
+    const {
+      selectedPokemon,
+      count,
+      favoritePokemons,
+      searchText,
+      favoriteOnly,
+      perPage,
+    } = this.state;
 
-    const filteredPokemons = this.filterPokemons(this.state.pokemons);
+    const filteredPokemons = this.filterPokemons(
+      this.state.pokemons,
+      favoritePokemons,
+      searchText,
+      favoriteOnly
+    );
     const paginatedPokemons = this.paginatePokemons(
       filteredPokemons,
-      this.state.perPage,
+      perPage,
       this.state.selectedPage
     );
 
-    const pageCount = this.getPageCount(filteredPokemons, this.state.perPage);
+    const pageCount = this.getPageCount(filteredPokemons.length, perPage);
 
     return (
       <div>
         {count ? <div>In total there are {count} pokemons!</div> : undefined}
 
         <Filters
-          searchText={this.state.searchText}
-          favoriteOnly={this.state.favoriteOnly}
+          searchText={searchText}
+          favoriteOnly={favoriteOnly}
           onSearchTextInput={this.handleSearchTextInput}
           onFavoriteInput={this.handleFavoriteInput}
         />
@@ -156,13 +166,12 @@ class App extends PureComponent {
           ? <div>
               <PokemonList
                 pokemons={paginatedPokemons}
-                favoritePokemons={this.state.favoritePokemons}
+                favoritePokemons={favoritePokemons}
                 onPokemonClick={this.handlePokemonClick}
-                onFavoriteClick={this.handleFavoriteClick}
+                onFavoriteClick={name =>
+                  this.handleFavoriteClick(favoritePokemons, name)}
                 onFiltersReset={this.handleFiltersReset}
                 onPageChange={this.handlePageChange}
-                searchText={this.state.searchText}
-                favoriteOnly={this.state.favoriteOnly}
                 pageCount={pageCount}
               />
             </div>

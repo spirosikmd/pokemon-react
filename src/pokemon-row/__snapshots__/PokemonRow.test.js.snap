@@ -1,0 +1,45 @@
+exports[`test PokemonRow renders a "*" when pokemon is not favorite and style color red 1`] = `
+<li>
+  <span
+    onClick={[Function]}
+    style={Object {}}>
+    pikachu
+  </span>
+  <button
+    onClick={[Function]}>
+    *
+  </button>
+</li>
+`;
+
+exports[`test PokemonRow renders a "-" when pokemon is favorite 1`] = `
+<li>
+  <span
+    onClick={[Function]}
+    style={
+      Object {
+        "color": "red",
+      }
+    }>
+    pikachu
+  </span>
+  <button
+    onClick={[Function]}>
+    -
+  </button>
+</li>
+`;
+
+exports[`test PokemonRow renders pokemon name favorite button and handle data change 1`] = `
+<li>
+  <span
+    onClick={[Function]}
+    style={Object {}}>
+    pikachu
+  </span>
+  <button
+    onClick={[Function]}>
+    *
+  </button>
+</li>
+`;

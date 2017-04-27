@@ -1,0 +1,25 @@
+exports[`App renders 1`] = `
+<div>
+  <form>
+    <label>
+      <input
+        onChange={[Function]}
+        placeholder="Search..."
+        type="text"
+        value="" />
+    </label>
+    <p>
+      <label>
+        <input
+          checked={false}
+          onChange={[Function]}
+          type="checkbox" />
+        Only show favorite pokemon
+      </label>
+    </p>
+  </form>
+  <div>
+    Loading...
+  </div>
+</div>
+`;

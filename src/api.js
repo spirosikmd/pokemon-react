@@ -7,6 +7,6 @@ export function getPokemon(pokemonName) {
 }
 
 export function getPokemons() {
-  return Promise.resolve(require('../mock/pokemonList.json'));
-  // return pokedex.getPokemonsList();
+  // return Promise.resolve(require('../mock/pokemonList.json'));
+  return pokedex.getPokemonsList();
 }

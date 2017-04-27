@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 const styles = {
   favorite: {
@@ -6,7 +6,7 @@ const styles = {
   },
 };
 
-class PokemonRow extends Component {
+class PokemonRow extends PureComponent {
   handlePokemonClick(pokemonName) {
     this.props.onPokemonClick(pokemonName);
   }
@@ -15,8 +15,8 @@ class PokemonRow extends Component {
     this.props.onFavoriteClick(pokemonName);
   }
 
-  getStyle() {
-    return this.props.isFavorite ? Object.assign({}, styles.favorite) : {};
+  getStyle(isFavorite) {
+    return isFavorite ? Object.assign({}, styles.favorite) : {};
   }
 
   render() {
@@ -26,7 +26,7 @@ class PokemonRow extends Component {
       <li>
         <span
           onClick={() => this.handlePokemonClick(pokemon.name)}
-          style={this.getStyle(pokemon.name)}
+          style={this.getStyle(this.props.isFavorite)}
         >
           {pokemon.name}
         </span>

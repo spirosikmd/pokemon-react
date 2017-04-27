@@ -18,9 +18,9 @@ class PokemonList extends PureComponent {
     this.props.onFavoriteClick(pokemonName);
   }
 
-  isFavorite(pokemonNameToFind) {
+  isFavorite(favoritePokemons, pokemonNameToFind) {
     return (
-      this.props.favoritePokemons.findIndex(
+      favoritePokemons.findIndex(
         favoritePokemon => favoritePokemon.name === pokemonNameToFind
       ) !== -1
     );
@@ -28,33 +28,36 @@ class PokemonList extends PureComponent {
 
   render() {
     const pokemons = this.props.pokemons;
+    const favoritePokemons = this.props.favoritePokemons;
+
     return (
       <div>
-        <ul>
-          {pokemons.length > 0
-            ? pokemons.map(pokemon => (
-                <PokemonRow
-                  key={pokemon.name}
-                  pokemon={pokemon}
-                  isFavorite={this.isFavorite(pokemon.name)}
-                  onPokemonClick={this.handlePokemonClick}
-                  onFavoriteClick={this.handleFavoriteClick}
-                />
-              ))
-            : <div>
-                <span>No results</span>
-                <button onClick={this.props.onFiltersReset}>reset</button>
-              </div>}
-        </ul>
+        {pokemons.length > 0 &&
+          <ul>
+            {pokemons.map(pokemon => (
+              <PokemonRow
+                key={pokemon.name}
+                pokemon={pokemon}
+                isFavorite={this.isFavorite(favoritePokemons, pokemon.name)}
+                onPokemonClick={this.handlePokemonClick}
+                onFavoriteClick={this.handleFavoriteClick}
+              />
+            ))}
+          </ul>}
 
-        {pokemons.length > 0
-          ? <ReactPaginate
-              pageCount={this.props.pageCount}
-              onPageChange={this.props.onPageChange}
-              marginPagesDisplayed={1}
-              pageRangeDisplayed={3}
-            />
-          : ''}
+        {pokemons.length > 0 &&
+          <ReactPaginate
+            pageCount={this.props.pageCount}
+            onPageChange={this.props.onPageChange}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={3}
+          />}
+
+        {pokemons.length === 0 &&
+          <div>
+            <span>No results</span>
+            <button onClick={this.props.onFiltersReset}>reset</button>
+          </div>}
       </div>
     );
   }
