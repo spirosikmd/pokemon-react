@@ -1,4 +1,4 @@
-exports[`test PokemonRow renders a "*" when pokemon is not favorite and style color red 1`] = `
+exports[`test PokemonRow renders a "catch!" when pokemon is not my pokemon and style color red 1`] = `
 <li>
   <span
     onClick={[Function]}
@@ -7,12 +7,12 @@ exports[`test PokemonRow renders a "*" when pokemon is not favorite and style co
   </span>
   <button
     onClick={[Function]}>
-    *
+    catch!
   </button>
 </li>
 `;
 
-exports[`test PokemonRow renders a "-" when pokemon is favorite 1`] = `
+exports[`test PokemonRow renders a "set free.." when pokemon is my pokemon 1`] = `
 <li>
   <span
     onClick={[Function]}
@@ -25,12 +25,12 @@ exports[`test PokemonRow renders a "-" when pokemon is favorite 1`] = `
   </span>
   <button
     onClick={[Function]}>
-    -
+    set free..
   </button>
 </li>
 `;
 
-exports[`test PokemonRow renders pokemon name favorite button and handle data change 1`] = `
+exports[`test PokemonRow renders pokemon name catch button and handle data change 1`] = `
 <li>
   <span
     onClick={[Function]}
@@ -39,7 +39,7 @@ exports[`test PokemonRow renders pokemon name favorite button and handle data ch
   </span>
   <button
     onClick={[Function]}>
-    *
+    catch!
   </button>
 </li>
 `;

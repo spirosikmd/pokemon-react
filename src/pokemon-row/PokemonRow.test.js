@@ -7,14 +7,14 @@ const pokemon = {
 };
 
 const mockHandleOnPokemonClick = jest.fn();
-const mockHandleOnFavoriteClick = jest.fn();
+const mockHandleOnCatchClick = jest.fn();
 
-test('PokemonRow renders pokemon name favorite button and handle data change', () => {
+test('PokemonRow renders pokemon name catch button and handle data change', () => {
   const component = renderer.create(
     <PokemonRow
       pokemon={pokemon}
       onPokemonClick={mockHandleOnPokemonClick}
-      onFavoriteClick={mockHandleOnFavoriteClick}
+      onCatchClick={mockHandleOnCatchClick}
     />
   );
   let tree = component.toJSON();
@@ -25,34 +25,34 @@ test('PokemonRow renders pokemon name favorite button and handle data change', (
   expect(mockHandleOnPokemonClick.mock.calls.length).toBe(1);
   expect(mockHandleOnPokemonClick.mock.calls[0][0]).toBe('pikachu');
 
-  const favorite = tree.children[1];
-  favorite.props.onClick();
-  expect(mockHandleOnFavoriteClick.mock.calls.length).toBe(1);
-  expect(mockHandleOnFavoriteClick.mock.calls[0][0]).toBe('pikachu');
+  const catchPokemon = tree.children[1];
+  catchPokemon.props.onClick();
+  expect(mockHandleOnCatchClick.mock.calls.length).toBe(1);
+  expect(mockHandleOnCatchClick.mock.calls[0][0]).toBe('pikachu');
 });
 
-test('PokemonRow renders a "*" when pokemon is not favorite and style color red', () => {
+test('PokemonRow renders a "catch!" when pokemon is not my pokemon and style color red', () => {
   const component = renderer.create(
-    <PokemonRow pokemon={pokemon} isFavorite={false} />
+    <PokemonRow pokemon={pokemon} isMyPokemon={false} />
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 });
 
-test('PokemonRow renders a "-" when pokemon is favorite', () => {
+test('PokemonRow renders a "set free.." when pokemon is my pokemon', () => {
   const component = renderer.create(
-    <PokemonRow pokemon={pokemon} isFavorite={true} />
+    <PokemonRow pokemon={pokemon} isMyPokemon={true} />
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 });
 
-test('PokemonRow getStyle returns empty object when isFavorite is false', () => {
+test('PokemonRow getStyle returns empty object when isMyPokemon is false', () => {
   const pokemonRow = new PokemonRow();
   expect(pokemonRow.getStyle(false)).toEqual({});
 });
 
-test('PokemonRow getStyle returns style with color red when isFavorite is true', () => {
+test('PokemonRow getStyle returns style with color red when isMyPokemon is true', () => {
   const pokemonRow = new PokemonRow();
   expect(pokemonRow.getStyle(true)).toEqual({
     color: 'red',

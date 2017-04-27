@@ -7,7 +7,7 @@ class PokemonList extends PureComponent {
     super(props);
 
     this.handlePokemonClick = this.handlePokemonClick.bind(this);
-    this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
+    this.handleCatchClick = this.handleCatchClick.bind(this);
     this.handlePerPageChange = this.handlePerPageChange.bind(this);
   }
 
@@ -15,38 +15,36 @@ class PokemonList extends PureComponent {
     this.props.onPokemonClick(pokemonName);
   }
 
-  handleFavoriteClick(pokemonName) {
-    this.props.onFavoriteClick(pokemonName);
+  handleCatchClick(pokemonName) {
+    this.props.onCatchClick(pokemonName);
   }
 
   handlePerPageChange(event) {
     this.props.onPerPageChange(parseInt(event.target.value, 10));
   }
 
-  isFavorite(favoritePokemons, pokemonNameToFind) {
+  isMyPokemon(myPokemon, pokemonNameToFind) {
     return (
-      favoritePokemons.findIndex(
-        favoritePokemon => favoritePokemon.name === pokemonNameToFind
-      ) !== -1
+      myPokemon.findIndex(pokemon => pokemon.name === pokemonNameToFind) !== -1
     );
   }
 
   render() {
-    const pokemons = this.props.pokemons;
-    const favoritePokemons = this.props.favoritePokemons;
+    const allPokemon = this.props.allPokemon;
+    const myPokemon = this.props.myPokemon;
 
     return (
       <div>
-        {pokemons.length > 0 &&
+        {allPokemon.length > 0 &&
           <div>
             <ul>
-              {pokemons.map(pokemon => (
+              {allPokemon.map(pokemon => (
                 <PokemonRow
                   key={pokemon.name}
                   pokemon={pokemon}
-                  isFavorite={this.isFavorite(favoritePokemons, pokemon.name)}
+                  isMyPokemon={this.isMyPokemon(myPokemon, pokemon.name)}
                   onPokemonClick={this.handlePokemonClick}
-                  onFavoriteClick={this.handleFavoriteClick}
+                  onCatchClick={this.handleCatchClick}
                 />
               ))}
             </ul>
@@ -71,7 +69,7 @@ class PokemonList extends PureComponent {
             />
           </div>}
 
-        {pokemons.length === 0 &&
+        {allPokemon.length === 0 &&
           <div>
             <span>No results</span>
             <button onClick={this.props.onFiltersReset}>reset</button>

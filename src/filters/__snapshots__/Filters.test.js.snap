@@ -13,7 +13,7 @@ exports[`test Filters renders filters and handle data change 1`] = `
         checked={true}
         onChange={[Function]}
         type="checkbox" />
-      Only show favorite pokemon
+      Only show my pokemon
     </label>
   </p>
 </form>

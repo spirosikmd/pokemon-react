@@ -25,7 +25,7 @@ describe('App', () => {
   });
 
   test('onGetPokemonsSuccess sets pokemons, isLoading, and count in state', () => {
-    app.onGetPokemonsSuccess({
+    app.onGetAllPokemonSuccess({
       results: [
         {
           name: 'pikachu',
@@ -34,7 +34,7 @@ describe('App', () => {
       count: 1,
     });
     expect(app.setState.mock.calls[0][0]).toEqual({
-      pokemons: [
+      allPokemon: [
         {
           name: 'pikachu',
         },
@@ -44,11 +44,11 @@ describe('App', () => {
     });
   });
 
-  describe('isFavorite', () => {
-    let favorite;
+  describe('isMyPokemon', () => {
+    let myPokemon;
 
     beforeEach(() => {
-      favorite = [
+      myPokemon = [
         {
           name: 'pikachu',
         },
@@ -56,16 +56,16 @@ describe('App', () => {
     });
 
     afterEach(() => {
-      favorite = null;
+      myPokemon = null;
     });
 
-    test('returns true when pokemon name is in favorite', () => {
-      const result = app.isFavorite(favorite, 'pikachu');
+    test('returns true when pokemon name is my pokemon', () => {
+      const result = app.isMyPokemon(myPokemon, 'pikachu');
       expect(result).toBe(true);
     });
 
-    test('returns false when pokemon name is not in favorite', () => {
-      const result = app.isFavorite(favorite, 'bulbasar');
+    test('returns false when pokemon name is not my pokemon', () => {
+      const result = app.isMyPokemon(myPokemon, 'bulbasar');
       expect(result).toBe(false);
     });
   });
@@ -84,19 +84,19 @@ describe('App', () => {
     });
   });
 
-  test('handleFiltersReset resets searchText, favoriteOnly, and selectedPage', () => {
+  test('handleFiltersReset resets searchText, myPokemonOnly, and selectedPage', () => {
     app.handleFiltersReset();
     expect(app.setState.mock.calls[0][0]).toEqual({
       searchText: '',
-      favoriteOnly: false,
+      myPokemonOnly: false,
       selectedPage: 0,
     });
   });
 
-  test('handleFavoriteInput sets the new favoriteOnly and resets selectedPage', () => {
-    app.handleFavoriteInput(true);
+  test('handleMyPokemonInput sets the new myPokemonOnly and resets selectedPage', () => {
+    app.handleMyPokemonInput(true);
     expect(app.setState.mock.calls[0][0]).toEqual({
-      favoriteOnly: true,
+      myPokemonOnly: true,
       selectedPage: 0,
     });
   });
@@ -127,13 +127,13 @@ describe('App', () => {
         name: 'rattata',
       },
     ];
-    const paginated = app.paginatePokemons(filteredPokemons, 2, 1);
+    const paginated = app.paginatePokemon(filteredPokemons, 2, 1);
     expect(paginated.length).toBe(2);
     expect(paginated[0].name).toBe('charmeleon');
     expect(paginated[1].name).toBe('metapod');
   });
 
-  test('filterPokemons filters pokemons based on searchText and favoriteOnly', () => {
+  test('filterPokemons filters pokemons based on searchText and myPokemonOnly', () => {
     const pokemons = [
       {
         name: 'pikachu',
@@ -151,17 +151,17 @@ describe('App', () => {
         name: 'rattata',
       },
     ];
-    const favorite = [
+    const myPokemon = [
       {
         name: 'metapod',
       },
     ];
 
-    let filtered = app.filterPokemons(pokemons, favorite, 'pika', false);
+    let filtered = app.filterPokemon(pokemons, myPokemon, 'pika', false);
     expect(filtered.length).toBe(1);
     expect(filtered[0].name).toBe('pikachu');
 
-    filtered = app.filterPokemons(pokemons, favorite, 'e', true);
+    filtered = app.filterPokemon(pokemons, myPokemon, 'e', true);
     expect(filtered.length).toBe(1);
     expect(filtered[0].name).toBe('metapod');
   });

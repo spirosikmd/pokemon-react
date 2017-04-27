@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
 const styles = {
-  favorite: {
+  myPokemon: {
     color: 'red',
   },
 };
@@ -11,12 +11,12 @@ class PokemonRow extends PureComponent {
     this.props.onPokemonClick(pokemonName);
   }
 
-  handleFavoriteClick(pokemonName) {
-    this.props.onFavoriteClick(pokemonName);
+  handleCatchClick(pokemonName) {
+    this.props.onCatchClick(pokemonName);
   }
 
-  getStyle(isFavorite) {
-    return isFavorite ? Object.assign({}, styles.favorite) : {};
+  getStyle(isMyPokemon) {
+    return isMyPokemon ? Object.assign({}, styles.myPokemon) : {};
   }
 
   render() {
@@ -26,12 +26,12 @@ class PokemonRow extends PureComponent {
       <li>
         <span
           onClick={() => this.handlePokemonClick(pokemon.name)}
-          style={this.getStyle(this.props.isFavorite)}
+          style={this.getStyle(this.props.isMyPokemon)}
         >
           {pokemon.name}
         </span>
-        <button onClick={() => this.handleFavoriteClick(pokemon.name)}>
-          {this.props.isFavorite ? '-' : '*'}
+        <button onClick={() => this.handleCatchClick(pokemon.name)}>
+          {this.props.isMyPokemon ? 'set free..' : 'catch!'}
         </button>
       </li>
     );

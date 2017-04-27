@@ -7,15 +7,17 @@ class Filters extends PureComponent {
     this.handleSearchTextInputChange = this.handleSearchTextInputChange.bind(
       this
     );
-    this.handleInStockInputChange = this.handleInStockInputChange.bind(this);
+    this.handleMyPokemonInputChange = this.handleMyPokemonInputChange.bind(
+      this
+    );
   }
 
-  handleSearchTextInputChange(e) {
-    this.props.onSearchTextInput(e.target.value);
+  handleSearchTextInputChange(event) {
+    this.props.onSearchTextInput(event.target.value);
   }
 
-  handleInStockInputChange(e) {
-    this.props.onFavoriteInput(e.target.checked);
+  handleMyPokemonInputChange(event) {
+    this.props.onMyPokemonInput(event.target.checked);
   }
 
   render() {
@@ -33,10 +35,10 @@ class Filters extends PureComponent {
           <label>
             <input
               type="checkbox"
-              checked={this.props.favoriteOnly}
-              onChange={this.handleInStockInputChange}
+              checked={this.props.myPokemonOnly}
+              onChange={this.handleMyPokemonInputChange}
             />
-            Only show favorite pokemon
+            Only show my pokemon
           </label>
         </p>
       </form>

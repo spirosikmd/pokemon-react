@@ -14,7 +14,7 @@ exports[`test PokemonList renders a list of pokemon and pagination 1`] = `
         </span>
         <button
           onClick={[Function]}>
-          -
+          set free..
         </button>
       </li>
     </ul>

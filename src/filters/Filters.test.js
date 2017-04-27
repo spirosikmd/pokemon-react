@@ -3,15 +3,15 @@ import renderer from 'react-test-renderer';
 import Filters from './Filters';
 
 const mockHandleSearchTextInput = jest.fn();
-const mockHandleOnFavoriteInput = jest.fn();
+const mockHandleOnMyPokemonInput = jest.fn();
 
 test('Filters renders filters and handle data change', () => {
   const component = renderer.create(
     <Filters
       searchText="pickachu"
-      favoriteOnly={true}
+      myPokemonOnly={true}
       onSearchTextInput={mockHandleSearchTextInput}
-      onFavoriteInput={mockHandleOnFavoriteInput}
+      onMyPokemonInput={mockHandleOnMyPokemonInput}
     />
   );
   let tree = component.toJSON();
@@ -26,12 +26,12 @@ test('Filters renders filters and handle data change', () => {
   expect(mockHandleSearchTextInput.mock.calls.length).toBe(1);
   expect(mockHandleSearchTextInput.mock.calls[0][0]).toBe('bulbasar');
 
-  const favoriteOnlyCheckboxInput = tree.children[1].children[0].children[0];
-  favoriteOnlyCheckboxInput.props.onChange({
+  const myPokemonOnlyCheckboxInput = tree.children[1].children[0].children[0];
+  myPokemonOnlyCheckboxInput.props.onChange({
     target: {
       checked: false,
     },
   });
-  expect(mockHandleOnFavoriteInput.mock.calls.length).toBe(1);
-  expect(mockHandleOnFavoriteInput.mock.calls[0][0]).toBe(false);
+  expect(mockHandleOnMyPokemonInput.mock.calls.length).toBe(1);
+  expect(mockHandleOnMyPokemonInput.mock.calls[0][0]).toBe(false);
 });

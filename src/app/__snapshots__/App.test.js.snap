@@ -14,7 +14,7 @@ exports[`App renders 1`] = `
           checked={false}
           onChange={[Function]}
           type="checkbox" />
-        Only show favorite pokemon
+        Only show my pokemon
       </label>
     </p>
   </form>

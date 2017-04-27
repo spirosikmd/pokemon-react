@@ -1,102 +1,94 @@
 import React, { PureComponent } from 'react';
-import { getPokemon, getPokemons } from '../api';
+import { getSinglePokemon, getAllPokemon } from '../api';
 import PokemonDetail from '../pokemon-detail/PokemonDetail';
 import PokemonList from '../pokemon-list/PokemonList';
 import Filters from '../filters/Filters';
 import './App.css';
-import {
-  favoritePokemon,
-  getFavoritePokemons,
-  removeFavoritePokemon,
-} from '../db';
+import { catchPokemon, getMyPokemon, removePokemon } from '../db';
 
 class App extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      pokemons: [],
-      favoritePokemons: [],
+      allPokemon: [],
+      myPokemon: [],
       selectedPokemon: null,
       isLoading: true,
       showPokemon: false,
       count: null,
       searchText: '',
-      favoriteOnly: false,
+      myPokemonOnly: false,
       perPage: 20,
       selectedPage: 0,
     };
 
     this.handlePokemonClick = this.handlePokemonClick.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
-    this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
+    this.handleCatchClick = this.handleCatchClick.bind(this);
     this.handleSearchTextInput = this.handleSearchTextInput.bind(this);
-    this.handleFavoriteInput = this.handleFavoriteInput.bind(this);
+    this.handleMyPokemonInput = this.handleMyPokemonInput.bind(this);
     this.handleFiltersReset = this.handleFiltersReset.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handlePerPageChange = this.handlePerPageChange.bind(this);
   }
 
   componentDidMount() {
-    getPokemons().then(this.onGetPokemonsSuccess.bind(this));
-    this.updateFavoritePokemons();
+    getAllPokemon().then(this.onGetAllPokemonSuccess.bind(this));
+    this.updateMyPokemon();
   }
 
-  updateFavoritePokemons() {
-    return getFavoritePokemons().then(favoritePokemons => {
-      this.setState({ favoritePokemons: [...favoritePokemons] });
+  updateMyPokemon() {
+    return getMyPokemon().then(myPokemon => {
+      this.setState({ myPokemon: [...myPokemon] });
     });
   }
 
-  filterPokemons(pokemons, favoritePokemons, searchText, favoriteOnly) {
-    return pokemons
+  filterPokemon(allPokemon, myPokemon, searchText, myPokemonOnly) {
+    return allPokemon
       .filter(pokemon => {
         return !searchText || pokemon.name.indexOf(searchText) !== -1;
       })
       .filter(pokemon => {
-        if (!favoriteOnly) {
+        if (!myPokemonOnly) {
           return true;
         }
-        return this.isFavorite(favoritePokemons, pokemon.name);
+        return this.isMyPokemon(myPokemon, pokemon.name);
       });
   }
 
-  paginatePokemons(filteredPokemons, perPage, selectedPage) {
+  paginatePokemon(filteredPokemon, perPage, selectedPage) {
     const start = Math.ceil(selectedPage * perPage);
     const end = start + perPage - 1;
-    return filteredPokemons.slice(start, end + 1);
+    return filteredPokemon.slice(start, end + 1);
   }
 
   handleSearchTextInput(searchText) {
     this.setState({ searchText, selectedPage: 0 });
   }
 
-  handleFavoriteInput(favoriteOnly) {
-    this.setState({ favoriteOnly, selectedPage: 0 });
+  handleMyPokemonInput(myPokemonOnly) {
+    this.setState({ myPokemonOnly, selectedPage: 0 });
   }
 
   handlePokemonClick(pokemonName) {
-    getPokemon(pokemonName).then(pokemonResponse => {
+    getSinglePokemon(pokemonName).then(pokemonResponse => {
       const selectedPokemon = Object.assign({}, pokemonResponse);
       this.setState({ selectedPokemon, showPokemon: true });
     });
   }
 
-  handleFavoriteClick(favoritePokemons, pokemonNameToFavorite) {
-    if (!this.isFavorite(favoritePokemons, pokemonNameToFavorite)) {
-      favoritePokemon(pokemonNameToFavorite).then(
-        this.updateFavoritePokemons.bind(this)
-      );
+  handleCatchClick(myPokemon, pokemonNameToCatch) {
+    if (!this.isMyPokemon(myPokemon, pokemonNameToCatch)) {
+      catchPokemon(pokemonNameToCatch).then(this.updateMyPokemon.bind(this));
       return;
     }
 
-    removeFavoritePokemon(pokemonNameToFavorite).then(
-      this.updateFavoritePokemons.bind(this)
-    );
+    removePokemon(pokemonNameToCatch).then(this.updateMyPokemon.bind(this));
   }
 
   handleFiltersReset() {
-    this.setState({ searchText: '', favoriteOnly: false, selectedPage: 0 });
+    this.setState({ searchText: '', myPokemonOnly: false, selectedPage: 0 });
   }
 
   handlePageChange({ selected }) {
@@ -111,70 +103,67 @@ class App extends PureComponent {
     this.setState({ perPage });
   }
 
-  isFavorite(favoritePokemons, pokemonNameToFavorite) {
+  isMyPokemon(myPokemon, pokemonName) {
     return (
-      favoritePokemons.find(
-        favoritePokemon => favoritePokemon.name === pokemonNameToFavorite
-      ) !== undefined
+      myPokemon.find(pokemon => pokemon.name === pokemonName) !== undefined
     );
   }
 
-  onGetPokemonsSuccess({ results, count }) {
-    const pokemons = [...results];
+  onGetAllPokemonSuccess({ results, count }) {
+    const allPokemon = [...results];
     this.setState({
-      pokemons,
+      allPokemon,
       isLoading: false,
       count,
     });
   }
 
-  getPageCount(filteredPokemonsLength, perPage) {
-    return Math.ceil(filteredPokemonsLength / perPage);
+  getPageCount(filteredPokemonLength, perPage) {
+    return Math.ceil(filteredPokemonLength / perPage);
   }
 
   render() {
     const {
       selectedPokemon,
       count,
-      favoritePokemons,
+      myPokemon,
       searchText,
-      favoriteOnly,
+      myPokemonOnly,
       perPage,
     } = this.state;
 
-    const filteredPokemons = this.filterPokemons(
-      this.state.pokemons,
-      favoritePokemons,
+    const filteredPokemon = this.filterPokemon(
+      this.state.allPokemon,
+      myPokemon,
       searchText,
-      favoriteOnly
+      myPokemonOnly
     );
-    const paginatedPokemons = this.paginatePokemons(
-      filteredPokemons,
+    const paginatedPokemon = this.paginatePokemon(
+      filteredPokemon,
       perPage,
       this.state.selectedPage
     );
 
-    const pageCount = this.getPageCount(filteredPokemons.length, perPage);
+    const pageCount = this.getPageCount(filteredPokemon.length, perPage);
 
     return (
       <div>
-        {count ? <div>In total there are {count} pokemons!</div> : undefined}
+        {count && <div>In total there are {count} pokemon!</div>}
 
         <Filters
           searchText={searchText}
-          favoriteOnly={favoriteOnly}
+          myPokemonOnly={myPokemonOnly}
           onSearchTextInput={this.handleSearchTextInput}
-          onFavoriteInput={this.handleFavoriteInput}
+          onMyPokemonInput={this.handleMyPokemonInput}
         />
 
         {!this.state.isLoading
           ? <div>
               <PokemonList
-                pokemons={paginatedPokemons}
-                favoritePokemons={favoritePokemons}
+                allPokemon={paginatedPokemon}
+                myPokemon={myPokemon}
                 onPokemonClick={this.handlePokemonClick}
-                onFavoriteClick={name =>
-                  this.handleFavoriteClick(favoritePokemons, name)}
+                onCatchClick={name => this.handleCatchClick(myPokemon, name)}
                 onFiltersReset={this.handleFiltersReset}
                 onPageChange={this.handlePageChange}
                 onPerPageChange={this.handlePerPageChange}
@@ -184,13 +173,12 @@ class App extends PureComponent {
             </div>
           : <div>Loading...</div>}
 
-        {selectedPokemon
-          ? <PokemonDetail
-              pokemon={selectedPokemon}
-              show={this.state.showPokemon}
-              onCloseModal={this.handleCloseModal}
-            />
-          : undefined}
+        {selectedPokemon &&
+          <PokemonDetail
+            pokemon={selectedPokemon}
+            show={this.state.showPokemon}
+            onCloseModal={this.handleCloseModal}
+          />}
       </div>
     );
   }

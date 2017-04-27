@@ -1,25 +1,25 @@
 const PouchDB = require('pouchdb-browser');
 
-const favoriteDB = new PouchDB('pokemon-favorite');
+const pokemonDB = new PouchDB('pokemon');
 
-export function favoritePokemon(name) {
-  const favoritePokemon = {
+export function catchPokemon(name) {
+  const pokemon = {
     _id: name,
     name,
   };
-  return favoriteDB.put(favoritePokemon);
+  return pokemonDB.put(pokemon);
 }
 
-export function removeFavoritePokemon(name) {
-  return getFavoritePokemon(name).then(result => favoriteDB.remove(result));
+export function removePokemon(name) {
+  return getPokemon(name).then(result => pokemonDB.remove(result));
 }
 
-export function getFavoritePokemons() {
-  return favoriteDB
+export function getMyPokemon() {
+  return pokemonDB
     .allDocs({ include_docs: true, descending: true })
     .then(result => result.rows.map(row => row.doc));
 }
 
-function getFavoritePokemon(name) {
-  return favoriteDB.get(name);
+function getPokemon(name) {
+  return pokemonDB.get(name);
 }
