@@ -34,6 +34,7 @@ class App extends PureComponent {
     this.handleFavoriteInput = this.handleFavoriteInput.bind(this);
     this.handleFiltersReset = this.handleFiltersReset.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.handlePerPageChange = this.handlePerPageChange.bind(this);
   }
 
   componentDidMount() {
@@ -106,6 +107,10 @@ class App extends PureComponent {
     this.setState({ showPokemon: false });
   }
 
+  handlePerPageChange(perPage) {
+    this.setState({ perPage });
+  }
+
   isFavorite(favoritePokemons, pokemonNameToFavorite) {
     return (
       favoritePokemons.find(
@@ -172,7 +177,9 @@ class App extends PureComponent {
                   this.handleFavoriteClick(favoritePokemons, name)}
                 onFiltersReset={this.handleFiltersReset}
                 onPageChange={this.handlePageChange}
+                onPerPageChange={this.handlePerPageChange}
                 pageCount={pageCount}
+                perPage={perPage}
               />
             </div>
           : <div>Loading...</div>}

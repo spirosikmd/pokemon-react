@@ -8,6 +8,7 @@ class PokemonList extends PureComponent {
 
     this.handlePokemonClick = this.handlePokemonClick.bind(this);
     this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
+    this.handlePerPageChange = this.handlePerPageChange.bind(this);
   }
 
   handlePokemonClick(pokemonName) {
@@ -16,6 +17,10 @@ class PokemonList extends PureComponent {
 
   handleFavoriteClick(pokemonName) {
     this.props.onFavoriteClick(pokemonName);
+  }
+
+  handlePerPageChange(event) {
+    this.props.onPerPageChange(parseInt(event.target.value, 10));
   }
 
   isFavorite(favoritePokemons, pokemonNameToFind) {
@@ -33,25 +38,38 @@ class PokemonList extends PureComponent {
     return (
       <div>
         {pokemons.length > 0 &&
-          <ul>
-            {pokemons.map(pokemon => (
-              <PokemonRow
-                key={pokemon.name}
-                pokemon={pokemon}
-                isFavorite={this.isFavorite(favoritePokemons, pokemon.name)}
-                onPokemonClick={this.handlePokemonClick}
-                onFavoriteClick={this.handleFavoriteClick}
-              />
-            ))}
-          </ul>}
+          <div>
+            <ul>
+              {pokemons.map(pokemon => (
+                <PokemonRow
+                  key={pokemon.name}
+                  pokemon={pokemon}
+                  isFavorite={this.isFavorite(favoritePokemons, pokemon.name)}
+                  onPokemonClick={this.handlePokemonClick}
+                  onFavoriteClick={this.handleFavoriteClick}
+                />
+              ))}
+            </ul>
 
-        {pokemons.length > 0 &&
-          <ReactPaginate
-            pageCount={this.props.pageCount}
-            onPageChange={this.props.onPageChange}
-            marginPagesDisplayed={1}
-            pageRangeDisplayed={3}
-          />}
+            <label>
+              Per page:
+              <select
+                value={this.props.perPage}
+                onChange={this.handlePerPageChange}
+              >
+                <option value="20">20</option>
+                <option value="40">40</option>
+                <option value="80">80</option>
+              </select>
+            </label>
+
+            <ReactPaginate
+              pageCount={this.props.pageCount}
+              onPageChange={this.props.onPageChange}
+              marginPagesDisplayed={1}
+              pageRangeDisplayed={3}
+            />
+          </div>}
 
         {pokemons.length === 0 &&
           <div>

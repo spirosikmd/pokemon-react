@@ -1,59 +1,80 @@
 exports[`test PokemonList renders a list of pokemon and pagination 1`] = `
 <div>
-  <ul>
-    <li>
-      <span
-        onClick={[Function]}
-        style={
-          Object {
-            "color": "red",
-          }
-        }>
-        pikachu
-      </span>
-      <button
-        onClick={[Function]}>
-        -
-      </button>
-    </li>
-  </ul>
-  <ul
-    className={undefined}>
-    <li
-      className="previous disabled">
-      <a
-        className={undefined}
-        href={undefined}
-        onClick={[Function]}
-        onKeyPress={[Function]}
-        tabIndex="0">
-        Previous
-      </a>
-    </li>
-    <li
-      className="selected">
-      <a
-        aria-current="page"
-        aria-label="Page 1 is your current page"
-        className={undefined}
-        href={undefined}
-        onClick={[Function]}
-        onKeyPress={[Function]}
-        tabIndex="0">
-        1
-      </a>
-    </li>
-    <li
-      className="next disabled">
-      <a
-        className={undefined}
-        href={undefined}
-        onClick={[Function]}
-        onKeyPress={[Function]}
-        tabIndex="0">
-        Next
-      </a>
-    </li>
-  </ul>
+  <div>
+    <ul>
+      <li>
+        <span
+          onClick={[Function]}
+          style={
+            Object {
+              "color": "red",
+            }
+          }>
+          pikachu
+        </span>
+        <button
+          onClick={[Function]}>
+          -
+        </button>
+      </li>
+    </ul>
+    <label>
+      Per page:
+      <select
+        onChange={[Function]}
+        value={undefined}>
+        <option
+          value="20">
+          20
+        </option>
+        <option
+          value="40">
+          40
+        </option>
+        <option
+          value="80">
+          80
+        </option>
+      </select>
+    </label>
+    <ul
+      className={undefined}>
+      <li
+        className="previous disabled">
+        <a
+          className={undefined}
+          href={undefined}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0">
+          Previous
+        </a>
+      </li>
+      <li
+        className="selected">
+        <a
+          aria-current="page"
+          aria-label="Page 1 is your current page"
+          className={undefined}
+          href={undefined}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0">
+          1
+        </a>
+      </li>
+      <li
+        className="next disabled">
+        <a
+          className={undefined}
+          href={undefined}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0">
+          Next
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>
 `;
