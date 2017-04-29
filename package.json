@@ -29,7 +29,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "prettier --single-quote --trailing-comma es5 --write \"src/**/*.js\"",
+      "yarn prettier",
       "git add"
     ]
   }
