@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Input } from 'semantic-ui-react';
 
 class Filters extends PureComponent {
   constructor(props) {
@@ -24,23 +25,21 @@ class Filters extends PureComponent {
     return (
       <form>
         <label>
-          <input
+          <Input
             type="text"
             placeholder="Search..."
             value={this.props.searchText}
             onChange={this.handleSearchTextInputChange}
           />
         </label>
-        <p>
-          <label>
-            <input
-              type="checkbox"
-              checked={this.props.myPokemonOnly}
-              onChange={this.handleMyPokemonInputChange}
-            />
-            Only show my pokemon
-          </label>
-        </p>
+        <label>
+          <Input
+            type="checkbox"
+            checked={this.props.myPokemonOnly}
+            onChange={this.handleMyPokemonInputChange}
+          />
+          Only show my pokemon
+        </label>
       </form>
     );
   }

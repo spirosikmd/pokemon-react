@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PokemonRow from '../pokemon-row/PokemonRow';
 import ReactPaginate from 'react-paginate';
+import { Grid, Button } from 'semantic-ui-react';
 
 class PokemonList extends PureComponent {
   constructor(props) {
@@ -37,17 +38,18 @@ class PokemonList extends PureComponent {
       <div>
         {allPokemon.length > 0 &&
           <div>
-            <ul>
+            <Grid columns={3} padded>
               {allPokemon.map(pokemon => (
-                <PokemonRow
-                  key={pokemon.name}
-                  pokemon={pokemon}
-                  isMyPokemon={this.isMyPokemon(myPokemon, pokemon.name)}
-                  onPokemonClick={this.handlePokemonClick}
-                  onCatchClick={this.handleCatchClick}
-                />
+                <Grid.Column key={pokemon.name}>
+                  <PokemonRow
+                    pokemon={pokemon}
+                    isMyPokemon={this.isMyPokemon(myPokemon, pokemon.name)}
+                    onPokemonClick={this.handlePokemonClick}
+                    onCatchClick={this.handleCatchClick}
+                  />
+                </Grid.Column>
               ))}
-            </ul>
+            </Grid>
 
             <label>
               Per page:
@@ -72,7 +74,7 @@ class PokemonList extends PureComponent {
         {allPokemon.length === 0 &&
           <div>
             <span>No results</span>
-            <button onClick={this.props.onFiltersReset}>reset</button>
+            <Button onClick={this.props.onFiltersReset}>reset</Button>
           </div>}
       </div>
     );

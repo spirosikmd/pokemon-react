@@ -165,4 +165,12 @@ describe('App', () => {
     expect(filtered.length).toBe(1);
     expect(filtered[0].name).toBe('metapod');
   });
+
+  test('handlePerPageChange sets perPage to state', () => {
+    app.handlePerPageChange(40);
+    expect(app.setState.mock.calls.length).toBe(1);
+    expect(app.setState.mock.calls[0][0]).toEqual({
+      perPage: 40,
+    });
+  });
 });

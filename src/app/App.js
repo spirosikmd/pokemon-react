@@ -1,10 +1,24 @@
 import React, { PureComponent } from 'react';
-import { getSinglePokemon, getAllPokemon } from '../api';
+import { getSinglePokemon } from '../api';
 import PokemonDetail from '../pokemon-detail/PokemonDetail';
 import PokemonList from '../pokemon-list/PokemonList';
 import Filters from '../filters/Filters';
 import './App.css';
 import { catchPokemon, getMyPokemon, removePokemon } from '../db';
+import { gql, graphql } from 'react-apollo';
+
+const AllPokemon = gql`
+  query {
+    pokemons(first: 151) {
+      id
+      name
+      types
+      image
+      maxHP
+      classification
+    }
+  }
+`;
 
 class App extends PureComponent {
   constructor(props) {
@@ -34,7 +48,6 @@ class App extends PureComponent {
   }
 
   componentDidMount() {
-    getAllPokemon().then(this.onGetAllPokemonSuccess.bind(this));
     this.updateMyPokemon();
   }
 
@@ -125,19 +138,21 @@ class App extends PureComponent {
   render() {
     const {
       selectedPokemon,
-      count,
       myPokemon,
       searchText,
       myPokemonOnly,
       perPage,
     } = this.state;
 
+    const { pokemons, loading } = this.props.data;
+
     const filteredPokemon = this.filterPokemon(
-      this.state.allPokemon,
+      pokemons ? [...pokemons] : [],
       myPokemon,
       searchText,
       myPokemonOnly
     );
+
     const paginatedPokemon = this.paginatePokemon(
       filteredPokemon,
       perPage,
@@ -148,7 +163,11 @@ class App extends PureComponent {
 
     return (
       <div>
-        {count && <div>In total there are {count} pokemon!</div>}
+        {pokemons &&
+          pokemons.length &&
+          <div>
+            In total there are {pokemons.length} pokemon!
+          </div>}
 
         <Filters
           searchText={searchText}
@@ -157,7 +176,7 @@ class App extends PureComponent {
           onMyPokemonInput={this.handleMyPokemonInput}
         />
 
-        {!this.state.isLoading
+        {!loading
           ? <div>
               <PokemonList
                 allPokemon={paginatedPokemon}
@@ -184,4 +203,6 @@ class App extends PureComponent {
   }
 }
 
-export default App;
+const AppWithData = graphql(AllPokemon)(App);
+
+export default AppWithData;
