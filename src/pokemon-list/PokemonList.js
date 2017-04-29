@@ -1,7 +1,25 @@
 import React, { PureComponent } from 'react';
 import PokemonRow from '../pokemon-row/PokemonRow';
 import ReactPaginate from 'react-paginate';
-import { Grid, Button } from 'semantic-ui-react';
+import { Grid, Button, Select } from 'semantic-ui-react';
+
+const perPageOptions = [
+  {
+    key: '20',
+    value: '20',
+    text: '20',
+  },
+  {
+    key: '40',
+    value: '40',
+    text: '40',
+  },
+  {
+    key: '80',
+    value: '80',
+    text: '80',
+  },
+];
 
 class PokemonList extends PureComponent {
   constructor(props) {
@@ -12,16 +30,16 @@ class PokemonList extends PureComponent {
     this.handlePerPageChange = this.handlePerPageChange.bind(this);
   }
 
-  handlePokemonClick(pokemonName) {
-    this.props.onPokemonClick(pokemonName);
+  handlePokemonClick(pokemon) {
+    this.props.onPokemonClick(pokemon);
   }
 
   handleCatchClick(pokemonName) {
     this.props.onCatchClick(pokemonName);
   }
 
-  handlePerPageChange(event) {
-    this.props.onPerPageChange(parseInt(event.target.value, 10));
+  handlePerPageChange(event, { value }) {
+    this.props.onPerPageChange(value);
   }
 
   isMyPokemon(myPokemon, pokemonNameToFind) {
@@ -38,30 +56,32 @@ class PokemonList extends PureComponent {
       <div>
         {allPokemon.length > 0 &&
           <div>
-            <Grid columns={3} padded>
-              {allPokemon.map(pokemon => (
-                <Grid.Column key={pokemon.name}>
-                  <PokemonRow
-                    pokemon={pokemon}
-                    isMyPokemon={this.isMyPokemon(myPokemon, pokemon.name)}
-                    onPokemonClick={this.handlePokemonClick}
-                    onCatchClick={this.handleCatchClick}
-                  />
-                </Grid.Column>
-              ))}
-            </Grid>
+            <div style={{ margin: '1rem 0' }}>
+              <Grid>
+                {allPokemon.map(pokemon => (
+                  <Grid.Column
+                    key={pokemon.name}
+                    mobile={8}
+                    tablet={5}
+                    computer={4}
+                  >
+                    <PokemonRow
+                      pokemon={pokemon}
+                      isMyPokemon={this.isMyPokemon(myPokemon, pokemon.name)}
+                      onPokemonClick={this.handlePokemonClick}
+                      onCatchClick={this.handleCatchClick}
+                    />
+                  </Grid.Column>
+                ))}
+              </Grid>
+            </div>
 
-            <label>
-              Per page:
-              <select
-                value={this.props.perPage}
-                onChange={this.handlePerPageChange}
-              >
-                <option value="20">20</option>
-                <option value="40">40</option>
-                <option value="80">80</option>
-              </select>
-            </label>
+            <Select
+              placeholder="Select per page"
+              options={perPageOptions}
+              value={this.props.perPage}
+              onChange={this.handlePerPageChange}
+            />
 
             <ReactPaginate
               pageCount={this.props.pageCount}
@@ -72,8 +92,8 @@ class PokemonList extends PureComponent {
           </div>}
 
         {allPokemon.length === 0 &&
-          <div>
-            <span>No results</span>
+          <div style={{ margin: '1rem 0' }}>
+            <h3>No results :(</h3>
             <Button onClick={this.props.onFiltersReset}>reset</Button>
           </div>}
       </div>

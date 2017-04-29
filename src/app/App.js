@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { getSinglePokemon } from '../api';
 import PokemonDetail from '../pokemon-detail/PokemonDetail';
 import PokemonList from '../pokemon-list/PokemonList';
 import Filters from '../filters/Filters';
@@ -33,7 +32,7 @@ class App extends PureComponent {
       count: null,
       searchText: '',
       myPokemonOnly: false,
-      perPage: 20,
+      perPage: '20',
       selectedPage: 0,
     };
 
@@ -60,7 +59,10 @@ class App extends PureComponent {
   filterPokemon(allPokemon, myPokemon, searchText, myPokemonOnly) {
     return allPokemon
       .filter(pokemon => {
-        return !searchText || pokemon.name.indexOf(searchText) !== -1;
+        return (
+          !searchText ||
+          pokemon.name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
+        );
       })
       .filter(pokemon => {
         if (!myPokemonOnly) {
@@ -84,11 +86,9 @@ class App extends PureComponent {
     this.setState({ myPokemonOnly, selectedPage: 0 });
   }
 
-  handlePokemonClick(pokemonName) {
-    getSinglePokemon(pokemonName).then(pokemonResponse => {
-      const selectedPokemon = Object.assign({}, pokemonResponse);
-      this.setState({ selectedPokemon, showPokemon: true });
-    });
+  handlePokemonClick(pokemon) {
+    const selectedPokemon = Object.assign({}, pokemon);
+    this.setState({ selectedPokemon, showPokemon: true });
   }
 
   handleCatchClick(myPokemon, pokemonNameToCatch) {
@@ -132,7 +132,7 @@ class App extends PureComponent {
   }
 
   getPageCount(filteredPokemonLength, perPage) {
-    return Math.ceil(filteredPokemonLength / perPage);
+    return Math.ceil(filteredPokemonLength / parseInt(perPage, 10));
   }
 
   render() {
@@ -144,10 +144,10 @@ class App extends PureComponent {
       perPage,
     } = this.state;
 
-    const { pokemons, loading } = this.props.data;
+    const { pokemons: pokemon, loading } = this.props.data;
 
     const filteredPokemon = this.filterPokemon(
-      pokemons ? [...pokemons] : [],
+      pokemon ? [...pokemon] : [],
       myPokemon,
       searchText,
       myPokemonOnly
@@ -162,12 +162,12 @@ class App extends PureComponent {
     const pageCount = this.getPageCount(filteredPokemon.length, perPage);
 
     return (
-      <div>
-        {pokemons &&
-          pokemons.length &&
-          <div>
-            In total there are {pokemons.length} pokemon!
-          </div>}
+      <div style={{ padding: '1rem' }}>
+        {pokemon &&
+          pokemon.length &&
+          <h1>
+            In total there are {pokemon.length} pokemon!
+          </h1>}
 
         <Filters
           searchText={searchText}

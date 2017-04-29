@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Input } from 'semantic-ui-react';
+import { Form } from 'semantic-ui-react';
 
 class Filters extends PureComponent {
   constructor(props) {
@@ -17,30 +17,26 @@ class Filters extends PureComponent {
     this.props.onSearchTextInput(event.target.value);
   }
 
-  handleMyPokemonInputChange(event) {
-    this.props.onMyPokemonInput(event.target.checked);
+  handleMyPokemonInputChange(event, { checked }) {
+    this.props.onMyPokemonInput(checked);
   }
 
   render() {
     return (
-      <form>
-        <label>
-          <Input
-            type="text"
-            placeholder="Search..."
-            value={this.props.searchText}
-            onChange={this.handleSearchTextInputChange}
-          />
-        </label>
-        <label>
-          <Input
-            type="checkbox"
-            checked={this.props.myPokemonOnly}
-            onChange={this.handleMyPokemonInputChange}
-          />
-          Only show my pokemon
-        </label>
-      </form>
+      <Form>
+        <Form.Input
+          label="Name"
+          type="text"
+          placeholder="Search by name..."
+          value={this.props.searchText}
+          onChange={this.handleSearchTextInputChange}
+        />
+        <Form.Checkbox
+          checked={this.props.myPokemonOnly}
+          onChange={this.handleMyPokemonInputChange}
+          label="Only show my pokemon"
+        />
+      </Form>
     );
   }
 }
