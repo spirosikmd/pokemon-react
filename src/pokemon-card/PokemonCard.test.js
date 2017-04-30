@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import PokemonRow from './PokemonRow';
+import PokemonCard from './PokemonCard';
 
 const pokemon = {
   name: 'pikachu',
@@ -11,7 +11,7 @@ const mockHandleOnCatchClick = jest.fn();
 
 test('PokemonRow renders pokemon name catch button and handle data change', () => {
   const component = renderer.create(
-    <PokemonRow
+    <PokemonCard
       pokemon={pokemon}
       onPokemonClick={mockHandleOnPokemonClick}
       onCatchClick={mockHandleOnCatchClick}
@@ -33,7 +33,7 @@ test('PokemonRow renders pokemon name catch button and handle data change', () =
 
 test('PokemonRow renders a "catch!" when pokemon is not my pokemon and style color red', () => {
   const component = renderer.create(
-    <PokemonRow pokemon={pokemon} isMyPokemon={false} />
+    <PokemonCard pokemon={pokemon} isMyPokemon={false} />
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
@@ -41,19 +41,19 @@ test('PokemonRow renders a "catch!" when pokemon is not my pokemon and style col
 
 test('PokemonRow renders a "set free.." when pokemon is my pokemon', () => {
   const component = renderer.create(
-    <PokemonRow pokemon={pokemon} isMyPokemon={true} />
+    <PokemonCard pokemon={pokemon} isMyPokemon={true} />
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 test('PokemonRow getStyle returns empty object when isMyPokemon is false', () => {
-  const pokemonRow = new PokemonRow();
+  const pokemonRow = new PokemonCard();
   expect(pokemonRow.getStyle(false)).toEqual({});
 });
 
 test('PokemonRow getStyle returns style with color red when isMyPokemon is true', () => {
-  const pokemonRow = new PokemonRow();
+  const pokemonRow = new PokemonCard();
   expect(pokemonRow.getStyle(true)).toEqual({
     color: 'red',
   });

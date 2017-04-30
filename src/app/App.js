@@ -4,27 +4,14 @@ import PokemonList from '../pokemon-list/PokemonList';
 import Filters from '../filters/Filters';
 import './App.css';
 import { catchPokemon, getMyPokemon, removePokemon } from '../db';
-import { gql, graphql } from 'react-apollo';
-
-const AllPokemon = gql`
-  query {
-    pokemons(first: 151) {
-      id
-      name
-      types
-      image
-      maxHP
-      classification
-    }
-  }
-`;
+import { graphql } from 'react-apollo';
+import { AllPokemon } from '../gql';
 
 class App extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      allPokemon: [],
       myPokemon: [],
       selectedPokemon: null,
       isLoading: true,
@@ -73,8 +60,9 @@ class App extends PureComponent {
   }
 
   paginatePokemon(filteredPokemon, perPage, selectedPage) {
-    const start = Math.ceil(selectedPage * perPage);
-    const end = start + perPage - 1;
+    const parsedPerPage = parseInt(perPage, 10);
+    const start = Math.ceil(selectedPage * parsedPerPage);
+    const end = start + parsedPerPage - 1;
     return filteredPokemon.slice(start, end + 1);
   }
 
@@ -120,15 +108,6 @@ class App extends PureComponent {
     return (
       myPokemon.find(pokemon => pokemon.name === pokemonName) !== undefined
     );
-  }
-
-  onGetAllPokemonSuccess({ results, count }) {
-    const allPokemon = [...results];
-    this.setState({
-      allPokemon,
-      isLoading: false,
-      count,
-    });
   }
 
   getPageCount(filteredPokemonLength, perPage) {

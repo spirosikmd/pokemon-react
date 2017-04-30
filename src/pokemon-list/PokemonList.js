@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
-import PokemonRow from '../pokemon-row/PokemonRow';
+import PokemonCard from '../pokemon-card/PokemonCard';
 import ReactPaginate from 'react-paginate';
 import { Grid, Button, Select } from 'semantic-ui-react';
+import './PokemonList.css';
 
 const perPageOptions = [
   {
@@ -65,7 +66,7 @@ class PokemonList extends PureComponent {
                     tablet={5}
                     computer={4}
                   >
-                    <PokemonRow
+                    <PokemonCard
                       pokemon={pokemon}
                       isMyPokemon={this.isMyPokemon(myPokemon, pokemon.name)}
                       onPokemonClick={this.handlePokemonClick}
@@ -83,12 +84,21 @@ class PokemonList extends PureComponent {
               onChange={this.handlePerPageChange}
             />
 
-            <ReactPaginate
-              pageCount={this.props.pageCount}
-              onPageChange={this.props.onPageChange}
-              marginPagesDisplayed={1}
-              pageRangeDisplayed={3}
-            />
+            <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+              <ReactPaginate
+                pageCount={this.props.pageCount}
+                onPageChange={this.props.onPageChange}
+                marginPagesDisplayed={1}
+                pageRangeDisplayed={3}
+                containerClassName="ui pagination menu"
+                activeClassName="active"
+                pageClassName="item"
+                previousClassName="item"
+                nextClassName="item"
+                disabledClassName="disabled"
+                breakClassName="disabled item"
+              />
+            </div>
           </div>}
 
         {allPokemon.length === 0 &&

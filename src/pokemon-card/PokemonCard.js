@@ -8,7 +8,7 @@ const styles = {
   },
 };
 
-class PokemonRow extends PureComponent {
+class PokemonCard extends PureComponent {
   handlePokemonClick(pokemon) {
     this.props.onPokemonClick(pokemon);
   }
@@ -32,16 +32,15 @@ class PokemonRow extends PureComponent {
     const pokemon = this.props.pokemon;
 
     return (
-      <Card link>
+      <Card link onClick={() => this.handlePokemonClick(pokemon)}>
         <Image
           verticalAlign="middle"
           centered
           src={pokemon.image}
           style={{ margin: '20px auto' }}
           height={100}
-          onClick={() => this.handlePokemonClick(pokemon)}
         />
-        <Card.Content onClick={() => this.handlePokemonClick(pokemon)}>
+        <Card.Content>
           <Card.Header>
             {pokemon.name}
           </Card.Header>
@@ -55,7 +54,10 @@ class PokemonRow extends PureComponent {
             size="mini"
             src={pokeballImage}
             style={this.getStyle(this.props.isMyPokemon)}
-            onClick={() => this.handleCatchClick(pokemon.name)}
+            onClick={event => {
+              event.stopPropagation();
+              this.handleCatchClick(pokemon.name);
+            }}
           />
         </Card.Content>
       </Card>
@@ -63,4 +65,4 @@ class PokemonRow extends PureComponent {
   }
 }
 
-export default PokemonRow;
+export default PokemonCard;

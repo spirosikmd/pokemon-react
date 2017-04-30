@@ -1,0 +1,150 @@
+exports[`test PokemonRow renders a "catch!" when pokemon is not my pokemon and style color red 1`] = `
+<div
+  className="ui link card"
+  href={undefined}
+  onClick={[Function]}>
+  <img
+    alt={undefined}
+    className="ui centered middle aligned image"
+    height={100}
+    onClick={[Function]}
+    src={undefined}
+    style={
+      Object {
+        "margin": "20px auto",
+      }
+    }
+    width={undefined} />
+  <div
+    className="content"
+    onClick={[Function]}>
+    <div
+      className="header">
+      pikachu
+    </div>
+    <div
+      className="description" />
+  </div>
+  <div
+    className="extra content">
+    <img
+      alt={undefined}
+      className="ui mini centered image"
+      height={undefined}
+      onClick={[Function]}
+      src={
+        Object {
+          "process": [Function],
+        }
+      }
+      style={
+        Object {
+          "borderRadius": "50%",
+          "boxShadow": "0 1px 3px 0 #D4D4D5, 0 0 0 1px #D4D4D5",
+        }
+      }
+      width={undefined} />
+  </div>
+</div>
+`;
+
+exports[`test PokemonRow renders a "set free.." when pokemon is my pokemon 1`] = `
+<div
+  className="ui link card"
+  href={undefined}
+  onClick={[Function]}>
+  <img
+    alt={undefined}
+    className="ui centered middle aligned image"
+    height={100}
+    onClick={[Function]}
+    src={undefined}
+    style={
+      Object {
+        "margin": "20px auto",
+      }
+    }
+    width={undefined} />
+  <div
+    className="content"
+    onClick={[Function]}>
+    <div
+      className="header">
+      pikachu
+    </div>
+    <div
+      className="description" />
+  </div>
+  <div
+    className="extra content">
+    <img
+      alt={undefined}
+      className="ui mini centered image"
+      height={undefined}
+      onClick={[Function]}
+      src={
+        Object {
+          "process": [Function],
+        }
+      }
+      style={
+        Object {
+          "borderRadius": "50%",
+          "boxShadow": "0 1px 3px 0 #D4D4D5, 0 0 0 1px #D4D4D5",
+          "opacity": 0.3,
+        }
+      }
+      width={undefined} />
+  </div>
+</div>
+`;
+
+exports[`test PokemonRow renders pokemon name catch button and handle data change 1`] = `
+<div
+  className="ui link card"
+  href={undefined}
+  onClick={[Function]}>
+  <img
+    alt={undefined}
+    className="ui centered middle aligned image"
+    height={100}
+    onClick={[Function]}
+    src={undefined}
+    style={
+      Object {
+        "margin": "20px auto",
+      }
+    }
+    width={undefined} />
+  <div
+    className="content"
+    onClick={[Function]}>
+    <div
+      className="header">
+      pikachu
+    </div>
+    <div
+      className="description" />
+  </div>
+  <div
+    className="extra content">
+    <img
+      alt={undefined}
+      className="ui mini centered image"
+      height={undefined}
+      onClick={[Function]}
+      src={
+        Object {
+          "process": [Function],
+        }
+      }
+      style={
+        Object {
+          "borderRadius": "50%",
+          "boxShadow": "0 1px 3px 0 #D4D4D5, 0 0 0 1px #D4D4D5",
+        }
+      }
+      width={undefined} />
+  </div>
+</div>
+`;

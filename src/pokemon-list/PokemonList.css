@@ -1,0 +1,11 @@
+.ui.pagination.menu {
+    padding: 0;
+}
+
+.ui.pagination.menu .item:not(.disabled) {
+    cursor: pointer;
+}
+
+.ui.pagination.menu .item.disabled a {
+    color: rgba(40, 40, 40, .3);
+}
